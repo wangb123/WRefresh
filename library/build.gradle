@@ -1,0 +1,68 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion rootProject.ext.config_compileSdkVersion
+    buildToolsVersion rootProject.ext.config_buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion rootProject.ext.config_targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        renderscriptTargetApi 19
+        renderscriptSupportModeEnabled true
+
+        resourcePrefix "w_refresh_"//添加一个资源前缀，防止资源冲突
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding {
+        enabled true
+    }
+    lintOptions {
+        abortOnError false
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+        }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "$api_kt"
+    implementation "$api_refresh"
+    implementation "$api_appcompat"
+    implementation "$api_recyclerview"
+
+    implementation 'org.wbing:base:0.1.4'
+    implementation 'org.wbing:contentlayout:0.0.3'
+    implementation 'org.wbing:listview:0.0.5'
+}
+repositories {
+    mavenCentral()
+}
+
+publish {
+    artifactId = 'refresh'
+    publishVersion = '0.0.2'
+    desc = '可刷新的'
+    userOrg = rootProject.ext.pub_user
+    groupId = rootProject.ext.pub_group
+    repoName = rootProject.ext.pub_repo
+    website = rootProject.ext.pub_website
+}

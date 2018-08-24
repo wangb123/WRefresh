@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="org.wbing.app_refresh.data.ContentData" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/dp_10"
+        android:paddingLeft="@dimen/dp_22"
+        android:paddingRight="@dimen/dp_22"
+        android:paddingTop="@dimen/dp_10">
+
+        <View
+            android:id="@+id/color"
+            android:layout_width="@dimen/dp_72"
+            android:layout_height="@dimen/dp_72"
+            app:backgroundColor="@{data.color}" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:background="@color/color_brand"
+            android:text="@{data.text}" />
+
+    </LinearLayout>
+</layout> 
