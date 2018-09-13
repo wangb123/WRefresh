@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion rootProject.ext.config_compileSdkVersion
@@ -49,7 +50,7 @@ dependencies {
     implementation "$api_appcompat"
     implementation "$api_recyclerview"
 
-    implementation 'org.wbing:base:0.1.4'
+    implementation 'org.wbing:base:0.2.2'
     implementation 'org.wbing:contentlayout:0.0.3'
     implementation 'org.wbing:listview:0.0.5'
 }
@@ -59,7 +60,7 @@ repositories {
 
 publish {
     artifactId = 'refresh'
-    publishVersion = '0.0.2'
+    publishVersion = '0.0.6'
     desc = '可刷新的'
     userOrg = rootProject.ext.pub_user
     groupId = rootProject.ext.pub_group

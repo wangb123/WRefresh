@@ -20,7 +20,6 @@ import java.util.List;
  * @date 2018/8/23
  */
 public class SingleListFragment extends WRefreshSingleListFragment<ContentData, ItemContentBinding> {
-
     @Override
     protected int variableId() {
         return BR.data;
@@ -31,28 +30,54 @@ public class SingleListFragment extends WRefreshSingleListFragment<ContentData, 
         return R.layout.item_content;
     }
 
-
-    @Override
-    public void initListView(WRecyclerView list) {
-        super.initListView(list);
-        list.addItemDecoration(new LineItemDecoration());
-    }
-
     @Override
     public void refresh() {
-        super.refresh();
-
         loadData(1);
-
     }
 
     @Override
     public void loadMore() {
-        super.loadMore();
         loadData(getPage());
     }
 
+    @Override
+    public void loadData() {
+        refresh();
+    }
 
+    //
+//    @Override
+//    protected int variableId() {
+//        return BR.data;
+//    }
+//
+//    @Override
+//    protected int holderLayout() {
+//        return R.layout.item_content;
+//    }
+//
+//
+//    @Override
+//    public void initListView(WRecyclerView list) {
+//        super.initListView(list);
+//        list.addItemDecoration(new LineItemDecoration());
+//    }
+//
+//    @Override
+//    public void refresh() {
+//        super.refresh();
+//
+//        loadData(1);
+//
+//    }
+//
+//    @Override
+//    public void loadMore() {
+//        super.loadMore();
+//        loadData(getPage());
+//    }
+//
+//
     @SuppressLint("StaticFieldLeak")
     private void loadData(int page) {
         new HttpTask<ContentData>(new WCallback<List<ContentData>>() {
@@ -60,27 +85,21 @@ public class SingleListFragment extends WRefreshSingleListFragment<ContentData, 
             public void onSuccess(List<ContentData> list) {
                 if (page == 1) {
                     setList(list);
+                    showContent(true);
                 } else {
                     addList(list);
+                    getBinding().refresh.setEnableLoadMore(false);
                 }
-                setNoMoreData(page == 5);
             }
 
             @Override
             public void onFailure(int i, String s) {
-                if (page == 1) {
-                    if (!TextUtils.isEmpty(s))
-                        getBinding().content.setErrorText(s);
-                    adapter().setList(null);
-                }
+                showError(s);
             }
 
             @Override
             public void onError(Throwable throwable) {
-                if (page == 1) {
-                    getBinding().content.setErrorText(throwable.getMessage());
-                    adapter().setList(null);
-                }
+                showError(throwable.getMessage());
             }
 
             @Override

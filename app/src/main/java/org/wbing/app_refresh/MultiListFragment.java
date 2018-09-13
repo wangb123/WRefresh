@@ -22,29 +22,26 @@ import java.util.List;
  * @date 2018/8/23
  */
 public class MultiListFragment extends WRefreshMultiListFragment<IMultiItem> {
+
+
     @Override
-    protected int variableId() {
+    public int variableId() {
         return BR.data;
     }
 
     @Override
-    public void initListView(WRecyclerView list) {
-        super.initListView(list);
-        list.addItemDecoration(new LineItemDecoration());
-    }
-
-    @Override
     public void refresh() {
-        super.refresh();
-
         loadData(1);
-
     }
 
     @Override
     public void loadMore() {
-        super.loadMore();
         loadData(getPage());
+    }
+
+    @Override
+    public void loadData() {
+        refresh();
     }
 
 
@@ -55,27 +52,22 @@ public class MultiListFragment extends WRefreshMultiListFragment<IMultiItem> {
             public void onSuccess(List<IMultiItem> list) {
                 if (page == 1) {
                     setList(list);
+                    showContent(true);
                 } else {
                     addList(list);
+                    getBinding().refresh.setEnableLoadMore(false);
                 }
-                setNoMoreData(page == 5);
+
             }
 
             @Override
             public void onFailure(int i, String s) {
-                if (page == 1) {
-                    if (!TextUtils.isEmpty(s))
-                        getBinding().content.setErrorText(s);
-                    adapter().setList(null);
-                }
+                showError(s);
             }
 
             @Override
             public void onError(Throwable throwable) {
-                if (page == 1) {
-                    getBinding().content.setErrorText(throwable.getMessage());
-                    adapter().setList(null);
-                }
+                showError(throwable.getMessage());
             }
 
             @Override
